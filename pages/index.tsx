@@ -5,12 +5,22 @@ import * as THREE from "three";
 import Polyhedron from "@/components/Polyhedron";
 import { ContactShadows, Environment, OrbitControls } from "@react-three/drei";
 import IPhone14 from "@/components/iPhone14";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [started, setStarted] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleOnUploadClick = useCallback(() => {
+    console.log("click01");
+    if (inputRef.current) {
+      console.log("click");
+      inputRef.current.click();
+    }
+  }, [inputRef]);
+
   return (
     <main
       className={`flex h-screen flex-row items-center justify-between relative ${inter.className}`}>
@@ -36,14 +46,23 @@ export default function Home() {
         <h1 className='text-6xl font-bold'>MocknButter</h1>
         <h2 className='text-2xl font-bold'>가장 쉬운 목업 제작 방법</h2>
         <div className='flex flex-col items-center justify-center mt-32'>
-          <button className='bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-2 px-4 rounded shadow-xl'>
+          <button
+            onClick={() => handleOnUploadClick()}
+            className='bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-2 px-5 rounded shadow-xl cursor-pointer'>
             이미지 업로드 하기
           </button>
+          <input
+            ref={inputRef}
+            type='file'
+            name='file'
+            id='file'
+            className='hidden'
+          />
         </div>
       </div>
       <div
         className={`w-full flex flex-col items-center justify-center h-screen absolute inset-0 bg-[#DCE0E1] transition-opacity duration-500 ${
-          started ? "opacity-0" : ""
+          started ? "hidden" : ""
         }`}>
         <h1 className='text-6xl font-bold'>MocknButter</h1>
         <h2 className='text-2xl font-bold'>가장 쉬운 목업 제작 방법</h2>
